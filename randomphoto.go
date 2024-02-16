@@ -8,8 +8,6 @@ import (
 	"math/rand/v2"
 	"net/http"
 	"regexp"
-
-	"github.com/kris-nova/logger"
 )
 
 var photosWithFaces []Photo
@@ -19,7 +17,8 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if nil == photosWithFaces {
 		log.Println("Getting faces")
-		photosWithFaces, err = getPhotosWithFaces()
+		//photosWithFaces, err = getPhotosWithFaces()
+		photosWithFaces, err = getPhotosWithPeople()
 		if err != nil {
 			log.Fatal("No faces got")
 		} else {
@@ -92,7 +91,7 @@ func getPhotosWithPeople() ([]Photo, error) {
 }
 
 func main() {
-	logger.Level = 4
+	log.Println("Starting up..")
 
 	http.HandleFunc("/photo/", makeHandler(viewHandler))
 	log.Fatal(http.ListenAndServe(":8080", nil))
